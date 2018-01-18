@@ -12,7 +12,8 @@
 
   tasks:
     - include: tasks/base.yml
-    - include: tasks/ufw.yml
+    - include: tasks/local_firewall.yml
+    - include: tasks/reporting.yml
 
   handlers:
     - include: handlers/handlers.yml

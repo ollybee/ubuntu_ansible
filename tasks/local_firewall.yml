@@ -18,8 +18,6 @@
   ufw: rule={{ item.rule }} port={{ item.port }} proto={{ item.proto }}
   with_items:
     - { rule: 'limit', port: '{{ ssh_port | default("22") }}', proto: 'tcp' }
-    - { rule: 'allow', port: '80', proto: 'tcp' }
-    - { rule: 'allow', port: '443', proto: 'tcp' }
   notify:
     - restart ufw
 
@@ -30,3 +28,9 @@
 
 - name: Enable ufw
   ufw: state=enabled
+
+- name: remote log if defined
+  lineinfile:
+    path: /etc/rsyslog.d/20-ufw.conf
+    line: ':msg,contains,"[UFW " @@{{syslog_server}}:514'
+  when: syslog_server is defined and syslog_server != None

@@ -18,3 +18,10 @@
     backup: yes
   notify:
     - restart sshd
+
+- name: remote log if defined
+  lineinfile:
+    path: /etc/rsyslog.d/50-default.conf
+    line: 'auth,authpriv.*     @@{{ syslog_server }}:514'
+  when: syslog_server is defined and syslog_server != None
+
